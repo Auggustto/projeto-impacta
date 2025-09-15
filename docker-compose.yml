@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  app_project_impacta:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: project_impacta_image
+    ports:
+      - "8009:8000"
+    networks:
+      - project_impacta_network
+    env_file:
+      - app/config/.env
+    restart: on-failure
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:15
+    container_name: postgres_project_impacta
+    environment:
+      POSTGRES_USER: impacta
+      POSTGRES_PASSWORD: impacta_2025
+      POSTGRES_DB: projeto_impacta
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - project_impacta_network
+    restart: always
+
+networks:
+  project_impacta_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
