@@ -38,6 +38,10 @@ def login():
 
     return render_template("login.html", form=form)
 
+@app.route("/logout", methods=["GET", "POST"])
+def logout():
+    return redirect(url_for("login"))
+
 @app.route('/list_products', methods=['GET'])
 def get():
     result = products.list_all_products()
